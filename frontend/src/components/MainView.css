@@ -1,0 +1,19 @@
+.main-view {
+    flex: 1;
+    background-color: var(--bg-base);
+    height: calc(100vh - 90px);
+    /* Leave room for NowPlayingBar */
+    overflow-y: auto;
+    position: relative;
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, #1f1f1f 0%, var(--bg-card) 300px);
+    /* Soft gradient background */
+}
+
+.main-content {
+    padding-bottom: 40px;
+    /* Extra padding at bottom */
+}

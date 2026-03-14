@@ -1,0 +1,106 @@
+.library-page {
+    width: 100%;
+}
+
+.library-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.library-header {
+    height: 340px;
+    padding: 0 32px 24px 32px;
+    display: flex;
+    align-items: flex-end;
+    gap: 24px;
+    margin-top: -64px;
+    /* Pull up under transparent TopBar */
+    padding-top: 64px;
+    background: linear-gradient(135deg, #450af5, #8e8cd8);
+}
+
+.library-hero-icon {
+    width: 232px;
+    height: 232px;
+    min-width: 232px;
+    background: linear-gradient(135deg, #450af5, #c4efd9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.library-hero-info {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.library-hero-info span:first-child {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.library-hero-info h1 {
+    font-size: 6rem;
+    font-weight: 900;
+    margin: 8px 0;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+
+.library-stats {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.9rem;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.user-name {
+    color: white;
+}
+
+.library-stats span:not(.user-name) {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.dot {
+    font-size: 1.2rem;
+    line-height: 0;
+}
+
+.library-content {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, var(--bg-base) 232px);
+    padding: 24px 32px;
+}
+
+.library-controls {
+    margin-bottom: 32px;
+}
+
+.play-all-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--accent-primary);
+    color: var(--bg-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s;
+}
+
+.play-all-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.play-all-btn:disabled {
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}

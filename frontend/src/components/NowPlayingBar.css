@@ -1,0 +1,242 @@
+.now-playing-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background-color: var(--bg-card);
+    border-top: 1px solid #282828;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 100;
+}
+
+.track-info {
+    width: 30%;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.track-art {
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.track-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.track-title {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.track-artist {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.like-btn {
+    color: var(--text-muted);
+    transition: color 0.2s;
+}
+
+.like-btn:hover {
+    color: var(--text-primary);
+}
+
+.empty-state {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.player-controls {
+    flex: 1;
+    max-width: 722px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.icon-btn {
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: color 0.2s;
+}
+
+.icon-btn:hover {
+    color: var(--text-primary);
+}
+
+.play-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--text-primary);
+    color: var(--bg-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+.play-btn:hover {
+    transform: scale(1.05);
+}
+
+.play-btn:active {
+    transform: scale(0.95);
+}
+
+.playback-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    min-width: 40px;
+    text-align: center;
+}
+
+/* Base custom slider styling */
+.progress-container,
+.volume-slider-container {
+    height: 4px;
+    background-color: #4D4D4D;
+    border-radius: 2px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.progress-container:hover .progress-fill,
+.volume-slider-container:hover .progress-fill {
+    background-color: var(--accent-primary);
+    /* Primary accent */
+}
+
+.progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    pointer-events: none;
+}
+
+/* Container hover dots */
+.progress-container::after,
+.volume-slider-container::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: var(--text-primary);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.1s;
+    pointer-events: none;
+}
+
+.progress-slider,
+.volume-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+.progress-slider::-webkit-slider-thumb,
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+}
+
+.progress-container:hover .progress-slider::-webkit-slider-thumb,
+.volume-slider-container:hover .volume-slider::-webkit-slider-thumb {
+    background: var(--text-primary);
+}
+
+
+.right-controls {
+    width: 30%;
+    min-width: 180px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    color: var(--text-muted);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 125px;
+}
+
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid var(--bg-base);
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

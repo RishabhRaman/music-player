@@ -1,0 +1,76 @@
+import express from 'express';
+import ytdl from 'ytdl-core';
+import ytsr from 'ytsr';
+import ytpl from 'ytpl';
+
+const router = express.Router();
+
+// Get Stream URL
+router.get('/stream/:id', async (req, res) => {
+    try {
+        const videoId = req.params.id;
+        const info = await ytdl.getInfo(videoId);
+        const format = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
+
+        if (format) {
+            res.json({ url: format.url });
+        } else {
+            res.status(404).json({ error: 'Audio stream not found' });
+        }
+    } catch (error) {
+        console.error("Stream Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Search
+router.get('/search', async (req, res) => {
+    try {
+        const query = req.query.q;
+        if (!query) return res.status(400).json({ error: 'Search query required' });
+
+        const searchResults = await ytsr(query, { limit: 15 });
+        const formattedResults = searchResults.items
+            .filter(item => item.type === 'video')
+            .map(item => ({
+                id: item.id,
+                title: item.title,
+                artist: item.author?.name || 'Unknown',
+                thumbnail: item.bestThumbnail?.url || item.thumbnails?.[0]?.url,
+                duration: item.duration
+            }));
+
+        res.json(formattedResults);
+    } catch (error) {
+        console.error("Search Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get Playlist
+router.get('/playlist/:id', async (req, res) => {
+    try {
+        const playlistId = req.params.id;
+        const playlist = await ytpl(playlistId, { limit: 50 });
+
+        const formattedTracks = playlist.items.map(item => ({
+            id: item.id,
+            title: item.title,
+            artist: item.author?.name || 'Unknown',
+            thumbnail: item.bestThumbnail?.url || item.thumbnails?.[0]?.url,
+            duration: item.duration
+        }));
+
+        res.json({
+            title: playlist.title,
+            author: playlist.author?.name,
+            thumbnails: playlist.bestThumbnail?.url,
+            tracks: formattedTracks
+        });
+    } catch (error) {
+        console.error("Playlist Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+export default router;
