@@ -1,9 +1,22 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Home, Search, Library, PlusSquare, Heart } from 'lucide-react';
+import { useLibrary } from '../context/LibraryContext';
+import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = () => {
+    const { playlists, setIsPlaylistModalOpen } = useLibrary();
+    const { user, setIsLoginModalOpen } = useAuth();
+    const navigate = useNavigate();
+
+    const handleCreatePlaylistClick = () => {
+        if (!user) {
+            setIsLoginModalOpen(true);
+            return;
+        }
+        setIsPlaylistModalOpen(true);
+    };
     return (
         <div className="sidebar">
             <div className="sidebar-logo">
@@ -35,13 +48,13 @@ const Sidebar = () => {
             </nav>
 
             <div className="sidebar-playlists">
-                <div className="sidebar-action">
+                <div className="sidebar-action" onClick={handleCreatePlaylistClick} style={{ cursor: 'pointer' }}>
                     <div className="icon-wrapper glass-panel">
                         <PlusSquare size={20} />
                     </div>
                     <span>Create Playlist</span>
                 </div>
-                <div className="sidebar-action">
+                <div className="sidebar-action" onClick={() => navigate('/liked')} style={{ cursor: 'pointer' }}>
                     <div className="icon-wrapper glass-panel" style={{ background: 'linear-gradient(135deg, var(--accent-secondary), var(--accent-primary))' }}>
                         <Heart size={20} fill="white" />
                     </div>
@@ -52,10 +65,19 @@ const Sidebar = () => {
             <div className="divider"></div>
 
             <div className="sidebar-user-playlists">
-                {/* Mock playlists */}
-                <p>Chill Vibes</p>
-                <p>Workout Mix</p>
-                <p>Discover Weekly</p>
+                {user && playlists.length > 0 ? (
+                    playlists.map(playlist => (
+                        <p 
+                            key={playlist._id} 
+                            onClick={() => navigate(`/playlist/${playlist._id}`)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {playlist.name}
+                        </p>
+                    ))
+                ) : user ? (
+                    <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic', fontSize: '0.9rem' }}>No playlists yet</p>
+                ) : null}
             </div>
 
         </div>

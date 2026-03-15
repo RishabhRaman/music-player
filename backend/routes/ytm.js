@@ -1,5 +1,5 @@
 import express from 'express';
-import ytdl from 'ytdl-core';
+import youtubedl from 'youtube-dl-exec';
 import ytsr from 'ytsr';
 import ytpl from 'ytpl';
 
@@ -9,11 +9,21 @@ const router = express.Router();
 router.get('/stream/:id', async (req, res) => {
     try {
         const videoId = req.params.id;
-        const info = await ytdl.getInfo(videoId);
-        const format = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' });
+        const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
-        if (format) {
-            res.json({ url: format.url });
+        const info = await youtubedl(videoUrl, {
+            dumpSingleJson: true,
+            noCheckCertificates: true,
+            noWarnings: true,
+            preferFreeFormats: true,
+        });
+
+        const audioFormats = info.formats.filter(f => f.vcodec === 'none' && f.acodec !== 'none');
+        
+        if (audioFormats && audioFormats.length > 0) {
+            // Pick best audio 
+            const bestAudio = audioFormats.sort((a, b) => b.abr - a.abr)[0];
+            res.json({ url: bestAudio.url });
         } else {
             res.status(404).json({ error: 'Audio stream not found' });
         }

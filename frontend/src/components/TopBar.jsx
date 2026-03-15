@@ -23,7 +23,7 @@ const TopBar = () => {
             </div>
 
             <div className="top-bar-right">
-                <button className="upgrade-btn">Explore Premium</button>
+
                 <button className="icon-btn-top">
                     <Bell size={18} />
                 </button>

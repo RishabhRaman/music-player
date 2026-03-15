@@ -49,4 +49,68 @@ router.get('/liked/:userId', async (req, res) => {
     }
 });
 
+// --- Playlist Routes ---
+
+// Create Playlist
+router.post('/playlist', async (req, res) => {
+    try {
+        const { userId, name, description } = req.body;
+        if (!userId || !name) {
+            return res.status(400).json({ error: 'User ID and Name are required' });
+        }
+        const playlist = new Playlist({ userId, name, description, tracks: [] });
+        await playlist.save();
+        res.status(201).json(playlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get User's Playlists
+router.get('/playlist/user/:userId', async (req, res) => {
+    try {
+        const playlists = await Playlist.find({ userId: req.params.userId }).sort('-createdAt');
+        res.json(playlists);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Add Track to Playlist
+router.post('/playlist/add', async (req, res) => {
+    try {
+        const { playlistId, track } = req.body;
+        const playlist = await Playlist.findById(playlistId);
+        
+        if (!playlist) {
+            return res.status(404).json({ error: 'Playlist not found' });
+        }
+
+        // Check if track already exists
+        const exists = playlist.tracks.find(t => t.videoId === track.videoId);
+        if (exists) {
+            return res.status(400).json({ error: 'Track already in playlist' });
+        }
+
+        playlist.tracks.push(track);
+        await playlist.save();
+        res.json(playlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get Single Playlist
+router.get('/playlist/:playlistId', async (req, res) => {
+    try {
+        const playlist = await Playlist.findById(req.params.playlistId);
+        if (!playlist) {
+            return res.status(404).json({ error: 'Playlist not found' });
+        }
+        res.json(playlist);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 export default router;

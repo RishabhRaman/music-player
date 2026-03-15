@@ -1,0 +1,35 @@
+.section-view-page {
+    width: 100%;
+    padding-bottom: 32px;
+}
+
+.section-view-page .section-header {
+    padding: 0 32px 32px 32px;
+    display: flex;
+    align-items: flex-end;
+    margin-top: -64px;
+    padding-top: 100px;
+    background: linear-gradient(180deg, rgba(255, 59, 59, 0.2), var(--bg-base) 100%);
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin-bottom: 24px;
+}
+
+.section-view-page .section-header h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1;
+    letter-spacing: -1.5px;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.5);
+}
+
+.section-view-page .section-content {
+    padding: 0 32px;
+}
+
+.section-view-page .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 24px;
+}

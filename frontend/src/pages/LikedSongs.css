@@ -1,0 +1,102 @@
+.liked-songs-page {
+    width: 100%;
+}
+
+.library-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.liked-songs-header {
+    height: 280px;
+    padding: 0 32px 32px 32px;
+    display: flex;
+    align-items: flex-end;
+    margin-top: -64px;
+    padding-top: 64px;
+    background: linear-gradient(180deg, rgba(255, 59, 59, 0.4) 0%, rgba(255, 107, 53, 0.1) 60%, var(--bg-base) 100%);
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.liked-hero-info {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    z-index: 2;
+}
+
+.liked-hero-info h1 {
+    font-size: 5.5rem;
+    font-weight: 900;
+    margin: 4px 0;
+    line-height: 1;
+    letter-spacing: -2px;
+    text-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    background: linear-gradient(90deg, #FFF, #ffd7d7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.liked-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.user-name {
+    color: white;
+}
+
+.liked-stats span:not(.user-name) {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.dot {
+    font-size: 1.2rem;
+    line-height: 0;
+}
+
+.liked-content {
+    background: var(--bg-base);
+    padding: 24px 32px;
+}
+
+.liked-controls {
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.play-all-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 24px rgba(255, 59, 59, 0.4);
+}
+
+.play-all-btn:hover:not(:disabled) {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 12px 32px rgba(255, 59, 59, 0.6);
+}
+
+.play-all-btn:disabled {
+    background: var(--bg-card);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}

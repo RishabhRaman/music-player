@@ -1,54 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import TrackList from '../components/TrackList';
-import { usePlayer } from '../context/PlayerContext';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Play } from 'lucide-react';
-import './Library.css';
+import { useLibrary } from '../context/LibraryContext';
+import { Heart, ListMusic, PlusSquare } from 'lucide-react';
+import './Library.css'; // New CSS for this page
 
 const Library = () => {
-    const [likedSongs, setLikedSongs] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const { playTrack } = usePlayer();
     const { user, setIsLoginModalOpen } = useAuth();
+    const { likedSongs, playlists, loadingLibrary, setIsPlaylistModalOpen } = useLibrary();
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchLikedSongs = async () => {
-            if (!user) {
-                setLoading(false);
-                return;
-            }
-
-            try {
-                // Fetch liked songs
-                const { data: songs } = await axios.get(`http://localhost:5000/api/library/liked/${user._id}`);
-                setLikedSongs(songs);
-            } catch (error) {
-                console.error("Failed to fetch library", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLikedSongs();
-    }, [user]);
-
-    const handlePlayLiked = () => {
-        if (likedSongs.length > 0) {
-            playTrack(likedSongs[0], likedSongs);
-        }
-    }
-
-    if (loading) {
+    if (loadingLibrary) {
         return <div className="library-loading"><div className="spinner"></div></div>;
     }
 
     if (!user) {
         return (
-            <div className="library-page">
+            <div className="library-overview-page">
                 <div className="library-header gradient-bg">
                     <div className="library-hero-info">
-                        <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>Log in to view Library</h1>
+                        <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>Log in to view your Library</h1>
                         <button className="upgrade-btn" style={{ width: 'fit-content' }} onClick={() => setIsLoginModalOpen(true)}>Log In</button>
                     </div>
                 </div>
@@ -57,46 +28,63 @@ const Library = () => {
     }
 
     return (
-        <div className="library-page">
-            <div className="library-header gradient-bg">
-                <div className="library-hero-icon shadow-xl">
-                    <HeartIcon />
-                </div>
+        <div className="library-overview-page">
+            <div className="library-header">
                 <div className="library-hero-info">
-                    <span>Playlist</span>
-                    <h1>Liked Songs</h1>
+                    <h1>Your Library</h1>
                     <div className="library-stats">
-                        <span className="user-name">testuser</span>
+                        <span className="user-name">{user.username}</span>
                         <span className="dot">•</span>
-                        <span>{likedSongs.length} songs</span>
+                        <span>{playlists.length} Playlists</span>
+                        <span className="dot">•</span>
+                        <span>{likedSongs.length} Liked Songs</span>
                     </div>
                 </div>
             </div>
 
-            <div className="library-content">
-                <div className="library-controls">
-                    <button
-                        className="play-all-btn shadow-lg"
-                        onClick={handlePlayLiked}
-                        disabled={likedSongs.length === 0}
-                    >
-                        <Play fill="currentColor" size={28} style={{ marginLeft: '4px' }} />
-                    </button>
+            <div className="library-content-grid">
+                
+                {/* Liked Songs Tile */}
+                <div className="library-card liked-songs-card" onClick={() => navigate('/liked')}>
+                    <div className="card-bg-gradient"></div>
+                    <div className="card-content">
+                        <div className="card-texts">
+                            <h2>Liked Songs</h2>
+                            <p>{likedSongs.length} liked songs</p>
+                        </div>
+                        <div className="card-icon glass-panel">
+                            <Heart size={32} fill="white" color="white" />
+                        </div>
+                    </div>
                 </div>
 
-                <div className="songs-container">
-                    <TrackList tracks={likedSongs} />
+                {/* Playlists */}
+                {playlists.map(playlist => (
+                    <div className="library-card playlist-card" key={playlist._id} onClick={() => navigate(`/playlist/${playlist._id}`)}>
+                        <div className="card-image-placeholder glass-panel">
+                            <ListMusic size={48} color="rgba(255,255,255,0.2)" />
+                        </div>
+                        <div className="card-info">
+                            <h3>{playlist.name}</h3>
+                            <p>{playlist.tracks.length} tracks</p>
+                        </div>
+                    </div>
+                ))}
+
+                {/* Create Playlist Tile */}
+                <div className="library-card create-card" onClick={() => setIsPlaylistModalOpen(true)}>
+                    <div className="card-image-placeholder glass-panel create-icon">
+                        <PlusSquare size={48} color="var(--text-muted)" />
+                    </div>
+                    <div className="card-info">
+                        <h3>Create Playlist</h3>
+                        <p>Build your collection</p>
+                    </div>
                 </div>
+
             </div>
         </div>
     );
 };
-
-// Custom heart icon for the hero graphic
-const HeartIcon = () => (
-    <svg role="img" height="64" width="64" viewBox="0 0 24 24" fill="white">
-        <path d="M8.667 3.018a5.617 5.617 0 0 0-3.344 1.258A6.353 6.353 0 0 0 3 9.434c0 1.956.764 3.737 2.152 5.048L12 21.054l6.848-6.572A7.108 7.108 0 0 0 21 9.434a6.353 6.353 0 0 0-2.323-5.158 5.617 5.617 0 0 0-3.344-1.258 5.545 5.545 0 0 0-3.333 1.252A5.545 5.545 0 0 0 8.667 3.018z"></path>
-    </svg>
-)
 
 export default Library;

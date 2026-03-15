@@ -1,0 +1,18 @@
+.playlist-view-page .library-header {
+    background: linear-gradient(to bottom, rgba(30, 30, 30, 0.8), var(--bg-base));
+}
+
+.playlist-hero-icon {
+    background: linear-gradient(135deg, var(--bg-card), rgba(255, 59, 59, 0.2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.playlist-icon-text {
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    opacity: 0.8;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { usePlayer } from '../context/PlayerContext';
 import { Play } from 'lucide-react';
@@ -8,6 +9,7 @@ const Home = () => {
     const [sections, setSections] = useState([]);
     const [loading, setLoading] = useState(true);
     const { playTrack } = usePlayer();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHomeData = async () => {
@@ -75,7 +77,13 @@ const Home = () => {
                 <div key={idx} className="home-section">
                     <div className="section-header">
                         <h2 className="section-title">{section.title}</h2>
-                        <span className="show-all">Show all</span>
+                        <span 
+                            className="show-all" 
+                            onClick={() => navigate(`/section/${section.id}`)}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            Show all
+                        </span>
                     </div>
                     <div className="card-grid">
                         {section.items.map((item, itemIdx) => (

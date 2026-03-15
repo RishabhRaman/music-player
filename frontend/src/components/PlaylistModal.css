@@ -1,0 +1,131 @@
+.playlist-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+.playlist-modal-content {
+    background-color: var(--bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 32px;
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 59, 59, 0.1);
+    transform: translateY(20px) scale(0.95);
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideUp {
+    to { 
+        transform: translateY(0) scale(1);
+    }
+}
+
+.playlist-modal-content h2 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: var(--text-muted);
+    transition: color 0.2s, transform 0.2s;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    padding: 6px;
+    display: flex;
+}
+
+.modal-close-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-group input {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 4px rgba(255, 59, 59, 0.1);
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+}
+
+.modal-actions button {
+    padding: 12px 24px;
+    border-radius: 24px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn {
+    color: var(--text-muted);
+}
+
+.cancel-btn:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.submit-btn {
+    background-color: var(--accent-primary);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255, 59, 59, 0.3);
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 59, 59, 0.4);
+    background-color: #ff5252;
+}
+
+.submit-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--bg-card-hover);
+    color: var(--text-muted);
+    box-shadow: none;
+}
