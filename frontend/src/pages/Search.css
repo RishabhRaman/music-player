@@ -74,38 +74,32 @@
     font-size: 1.1rem;
 }
 
-.category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 24px;
+.category-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
 }
 
-.category-card {
-    height: 180px;
-    border-radius: 8px;
-    padding: 16px;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: white;
+.category-pill {
+    padding: 14px 28px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, rgba(25, 25, 25, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+    border: 1px solid rgba(220, 20, 60, 0.25);
+    color: var(--text-primary, #ffffff);
+    font-size: 1.05rem;
+    font-weight: 500;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
-.category-card:hover {
-    transform: scale(1.03);
-}
-
-/* Add a mock decortive shape to cards */
-.category-card::after {
-    content: '';
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: rgba(0, 0, 0, 0.2);
-    bottom: -10px;
-    right: -20px;
-    transform: rotate(25deg);
-    border-radius: 8px;
+.category-pill:hover {
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.85) 0%, rgba(160, 10, 40, 0.95) 100%);
+    border-color: #ff2a55;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(220, 20, 60, 0.3);
+    color: white;
 }

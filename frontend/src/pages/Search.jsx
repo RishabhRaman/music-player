@@ -45,7 +45,7 @@ const Search = () => {
                     <input
                         type="text"
                         className="search-input"
-                        placeholder="What do you want to listen to?"
+                        placeholder="Music heals, Heal yourself now..."
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                     />
@@ -70,13 +70,15 @@ const Search = () => {
                 {!loading && !error && query.trim() === '' && (
                     <div className="browse-all">
                         <h2 className="section-title">Browse all</h2>
-                        <div className="category-grid">
-                            <div className="category-card" style={{ backgroundColor: '#E13300' }}>Podcasts</div>
-                            <div className="category-card" style={{ backgroundColor: '#1E3264' }}>Made For You</div>
-                            <div className="category-card" style={{ backgroundColor: '#E8115B' }}>New Releases</div>
-                            <div className="category-card" style={{ backgroundColor: '#8D67AB' }}>Pop</div>
-                            <div className="category-card" style={{ backgroundColor: '#E91429' }}>Hip-Hop</div>
-                            <div className="category-card" style={{ backgroundColor: '#B02897' }}>Rock</div>
+                        <div className="category-tags">
+                            <div className="category-pill" onClick={() => setQuery('Trending')}>Trending Now</div>
+                            <div className="category-pill" onClick={() => setQuery('Top Global')}>Top Global</div>
+                            <div className="category-pill" onClick={() => setQuery('New Releases')}>New Releases</div>
+                            <div className="category-pill" onClick={() => setQuery('Workout')}>Workout</div>
+                            <div className="category-pill" onClick={() => setQuery('Chill Vibes')}>Chill Vibes</div>
+                            <div className="category-pill" onClick={() => setQuery('Party Anthems')}>Party Anthems</div>
+                            <div className="category-pill" onClick={() => setQuery('Focus & Study')}>Focus & Study</div>
+                            <div className="category-pill" onClick={() => setQuery('Acoustic')}>Acoustic</div>
                         </div>
                     </div>
                 )}

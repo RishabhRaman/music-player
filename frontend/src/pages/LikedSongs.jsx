@@ -3,8 +3,8 @@ import TrackList from '../components/TrackList';
 import { usePlayer } from '../context/PlayerContext';
 import { useAuth } from '../context/AuthContext';
 import { useLibrary } from '../context/LibraryContext';
-import { Play } from 'lucide-react';
-import './Library.css';
+import { Play, Heart } from 'lucide-react';
+import './LikedSongs.css';
 
 const Library = () => {
     const { playTrack } = usePlayer();
@@ -24,10 +24,13 @@ const Library = () => {
     if (!user) {
         return (
             <div className="liked-songs-page">
-                <div className="liked-songs-header">
+                <div className="liked-songs-header empty-header">
+                    <div className="liked-hero-cover empty-cover shadow-2xl">
+                        <Heart size={64} color="rgba(255, 255, 255, 0.4)" strokeWidth={1} />
+                    </div>
                     <div className="liked-hero-info">
-                        <h1 style={{ fontSize: '3rem', marginBottom: '16px' }}>Log in to view Library</h1>
-                        <button className="upgrade-btn" style={{ width: 'fit-content' }} onClick={() => setIsLoginModalOpen(true)}>Log In</button>
+                        <h1 style={{ fontSize: '4rem', marginBottom: '16px', letterSpacing: '-2px' }}>Log in to view Library</h1>
+                        <button className="upgrade-btn" style={{ width: 'fit-content', padding: '12px 32px', fontSize: '1.1rem' }} onClick={() => setIsLoginModalOpen(true)}>Log In</button>
                     </div>
                 </div>
             </div>
@@ -37,7 +40,11 @@ const Library = () => {
     return (
         <div className="liked-songs-page">
             <div className="liked-songs-header">
+                <div className="liked-hero-cover shadow-2xl">
+                    <Heart fill="white" size={80} color="white" />
+                </div>
                 <div className="liked-hero-info">
+                    <span className="hero-badge">Playlist</span>
                     <h1>Liked Songs</h1>
                     <div className="liked-stats">
                         <span className="user-name">{user?.username || 'testuser'}</span>
