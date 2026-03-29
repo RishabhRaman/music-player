@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { usePlayer } from '../context/PlayerContext';
 import { Play } from 'lucide-react';
 import './SectionView.css'; 
@@ -16,7 +16,7 @@ const SectionView = () => {
         const fetchSection = async () => {
             try {
                 // Fetch the expanded list of 20 items for this specific category
-                const { data } = await axios.get(`http://localhost:5000/api/ytm/home/section/${sectionId}`);
+                const { data } = await api.get(`/api/ytm/home/section/${sectionId}`);
                 setSectionData(data);
             } catch (error) {
                 console.error("Failed to load section data", error);

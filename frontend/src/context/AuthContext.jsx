@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (username) => {
         try {
-            const { data } = await axios.post('http://localhost:5000/api/library/user', { username });
+            const { data } = await api.post('/api/library/user', { username });
             setUser(data);
             localStorage.setItem('orbitUser', JSON.stringify(data));
             setIsLoginModalOpen(false);

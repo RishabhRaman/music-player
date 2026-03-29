@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { Search as SearchIcon } from 'lucide-react';
 import TrackList from '../components/TrackList';
 import './Search.css';
@@ -27,7 +27,7 @@ const Search = () => {
         setLoading(true);
         setError(null);
         try {
-            const { data } = await axios.get(`http://localhost:5000/api/ytm/search?q=${searchQuery}`);
+            const { data } = await api.get(`/api/ytm/search?q=${searchQuery}`);
             setResults(data);
         } catch (err) {
             console.error('Search failed:', err);

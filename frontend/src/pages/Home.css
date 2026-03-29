@@ -1,5 +1,36 @@
 .home-container {
     padding: 24px;
+    background: linear-gradient(180deg, rgba(180, 20, 40, 0.5) 0%, rgba(220, 30, 50, 0.15) 250px, transparent 500px);
+}
+
+.home-footer {
+    text-align: center;
+    padding-top: 40px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 40px;
+}
+
+.home-footer .heart {
+    color: #ff3b3b;
+    display: inline-block;
+    animation: heartbeat 1.5s infinite;
+}
+
+.home-footer .author {
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.2); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.2); }
+    60% { transform: scale(1); }
 }
 
 .greeting {

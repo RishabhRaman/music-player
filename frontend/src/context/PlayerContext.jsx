@@ -1,5 +1,5 @@
 import React, { createContext, useState, useRef, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const PlayerContext = createContext();
 
@@ -70,7 +70,7 @@ export const PlayerProvider = ({ children }) => {
             if (!currentTrack) return;
             setIsLoading(true);
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/ytm/stream/${currentTrack.id}`);
+                const { data } = await api.get(`/api/ytm/stream/${currentTrack.id}`);
                 setStreamUrl(data.url);
                 if (isPlaying) {
                     audioRef.current.play().catch(e => console.error("Playback error", e));

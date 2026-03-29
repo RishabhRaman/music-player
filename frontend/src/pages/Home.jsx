@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { usePlayer } from '../context/PlayerContext';
 import { Play } from 'lucide-react';
 import './Home.css';
@@ -14,7 +14,7 @@ const Home = () => {
     useEffect(() => {
         const fetchHomeData = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/ytm/home');
+                const { data } = await api.get('/api/ytm/home');
                 setSections(data);
             } catch (error) {
                 console.error("Failed to load home data", error);
@@ -103,6 +103,10 @@ const Home = () => {
                     </div>
                 </div>
             ))}
+
+            <div className="home-footer">
+                Made with <span className="heart">♥</span> by <span className="author">Rishabh Raman Jha</span>
+            </div>
         </div>
     );
 };

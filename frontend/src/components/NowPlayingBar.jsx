@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { usePlayer } from '../context/PlayerContext';
 import { useAuth } from '../context/AuthContext';
 import { Play, Pause, SkipBack, SkipForward, Volume2, Mic2, MonitorSpeaker, Heart } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 import './NowPlayingBar.css';
 
 const NowPlayingBar = () => {
@@ -18,7 +18,7 @@ const NowPlayingBar = () => {
                 return;
             }
             try {
-                const { data: songs } = await axios.get(`http://localhost:5000/api/library/liked/${user._id}`);
+                const { data: songs } = await api.get(`/api/library/liked/${user._id}`);
                 setIsLiked(songs.some(s => s.videoId === currentTrack.id));
             } catch (error) {
                 console.error("Failed to check liked status", error);
@@ -36,7 +36,7 @@ const NowPlayingBar = () => {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/library/like', {
+            await api.post('/api/library/like', {
                 userId: user._id,
                 track: {
                     videoId: currentTrack.id,
@@ -125,8 +125,8 @@ const NowPlayingBar = () => {
             </div>
 
             <div className="right-controls">
-                <button className="icon-btn"><Mic2 size={16} /></button>
-                <button className="icon-btn"><MonitorSpeaker size={16} /></button>
+                <button className="icon-btn" title="Lyrics (Coming Soon)"><Mic2 size={16} /></button>
+                <button className="icon-btn" title="Connect to a device (Coming Soon)"><MonitorSpeaker size={16} /></button>
                 <div className="volume-control">
                     <Volume2 size={20} />
                     <div className="volume-slider-container">

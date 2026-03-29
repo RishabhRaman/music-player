@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import api from '../utils/api';
 import { useAuth } from './AuthContext';
 
 const LibraryContext = createContext();
@@ -25,8 +25,8 @@ export const LibraryProvider = ({ children }) => {
             setLoadingLibrary(true);
             try {
                 const [likedRes, playlistsRes] = await Promise.all([
-                    axios.get(`http://localhost:5000/api/library/liked/${user._id}`),
-                    axios.get(`http://localhost:5000/api/library/playlist/user/${user._id}`)
+                    api.get(`/api/library/liked/${user._id}`),
+                    api.get(`/api/library/playlist/user/${user._id}`)
                 ]);
                 setLikedSongs(likedRes.data);
                 setPlaylists(playlistsRes.data);
@@ -43,7 +43,7 @@ export const LibraryProvider = ({ children }) => {
     const toggleLike = async (track) => {
         if (!user) return false;
         try {
-            const { data } = await axios.post('http://localhost:5000/api/library/like', {
+            const { data } = await api.post('/api/library/like', {
                 userId: user._id,
                 track
             });
@@ -58,7 +58,7 @@ export const LibraryProvider = ({ children }) => {
     const createPlaylist = async (name) => {
         if (!user) return null;
         try {
-            const { data } = await axios.post('http://localhost:5000/api/library/playlist', {
+            const { data } = await api.post('/api/library/playlist', {
                 userId: user._id,
                 name
             });
@@ -73,7 +73,7 @@ export const LibraryProvider = ({ children }) => {
     const addToPlaylist = async (playlistId, track) => {
         if (!user) return false;
         try {
-            await axios.post('http://localhost:5000/api/library/playlist/add', {
+            await api.post('/api/library/playlist/add', {
                 playlistId,
                 track
             });
