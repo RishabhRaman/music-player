@@ -64,21 +64,24 @@ export const PlayerProvider = ({ children }) => {
         audioRef.current.volume = volume;
     }, [volume]);
 
-    // Fetch true stream URL when track changes
+    // Set true stream URL when track changes
     useEffect(() => {
-        const fetchStreamUrl = async () => {
+        const fetchStreamUrl = () => {
             if (!currentTrack) return;
             setIsLoading(true);
             try {
-                const { data } = await api.get(`/api/ytm/stream/${currentTrack.id}`);
-                setStreamUrl(data.url);
-                if (isPlaying) {
-                    audioRef.current.play().catch(e => console.error("Playback error", e));
-                }
+                // Get absolute base URL from API instance
+                let backendUrl = api.defaults.baseURL || 'http://localhost:5000';
+                
+                // Construct the direct streaming URL via our backend proxy
+                const directStreamUrl = `${backendUrl}/api/ytm/stream/${currentTrack.id}`;
+                
+                setStreamUrl(directStreamUrl);
+                
+                // Playback handling is managed by the streamUrl effect defined above
             } catch (error) {
-                console.error("Failed to fetch stream", error);
+                console.error("Failed to set stream target", error);
                 setIsLoading(false);
-                // In a real app we might want to automatically skip to next track here
             }
         };
 

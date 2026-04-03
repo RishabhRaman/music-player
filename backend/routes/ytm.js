@@ -5,31 +5,37 @@ import ytpl from 'ytpl';
 
 const router = express.Router();
 
-// Get Stream URL
 router.get('/stream/:id', async (req, res) => {
     try {
         const videoId = req.params.id;
         const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
-        const info = await youtubedl(videoUrl, {
-            dumpSingleJson: true,
-            noCheckCertificates: true,
-            noWarnings: true,
-            preferFreeFormats: true,
+        // Proxy the audio stream directly to the client instead of returning a URL.
+        // This solves the 403 Forbidden issue caused by YouTube's IP-locked streams when backend and client IPs differ.
+        const subprocess = youtubedl.exec(videoUrl, {
+            output: '-',
+            format: 'bestaudio',
+        }, {
+            stdio: ['ignore', 'pipe', 'ignore']
         });
 
-        const audioFormats = info.formats.filter(f => f.vcodec === 'none' && f.acodec !== 'none');
-        
-        if (audioFormats && audioFormats.length > 0) {
-            // Pick best audio 
-            const bestAudio = audioFormats.sort((a, b) => b.abr - a.abr)[0];
-            res.json({ url: bestAudio.url });
-        } else {
-            res.status(404).json({ error: 'Audio stream not found' });
-        }
+        // Set headers for audio streaming
+        res.set('Content-Type', 'audio/webm');
+        res.set('Transfer-Encoding', 'chunked');
+
+        // Pipe the stdout from yt-dlp to the Express response
+        subprocess.stdout.pipe(res);
+
+        // Handle client disconnect
+        req.on('close', () => {
+            subprocess.kill('SIGKILL');
+        });
+
     } catch (error) {
         console.error("Stream Error:", error);
-        res.status(500).json({ error: error.message });
+        if (!res.headersSent) {
+            res.status(500).json({ error: error.message });
+        }
     }
 });
 
