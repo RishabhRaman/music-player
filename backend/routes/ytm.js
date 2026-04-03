@@ -1,6 +1,6 @@
 import express from 'express';
 import youtubedl from 'youtube-dl-exec';
-import ytsr from 'ytsr';
+import ytSearch from 'yt-search';
 import ytpl from 'ytpl';
 
 const router = express.Router();
@@ -39,15 +39,14 @@ router.get('/search', async (req, res) => {
         const query = req.query.q;
         if (!query) return res.status(400).json({ error: 'Search query required' });
 
-        const searchResults = await ytsr(query, { limit: 15 });
-        const formattedResults = searchResults.items
-            .filter(item => item.type === 'video')
+        const searchResults = await ytSearch(query);
+        const formattedResults = searchResults.videos.slice(0, 15)
             .map(item => ({
-                id: item.id,
+                id: item.videoId,
                 title: item.title,
                 artist: item.author?.name || 'Unknown',
-                thumbnail: item.bestThumbnail?.url || item.thumbnails?.[0]?.url,
-                duration: item.duration
+                thumbnail: item.image || item.thumbnail,
+                duration: item.timestamp || '0:00'
             }));
 
         res.json(formattedResults);

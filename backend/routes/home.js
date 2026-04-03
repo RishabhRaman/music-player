@@ -1,9 +1,9 @@
 import express from 'express';
-import ytsr from 'ytsr';
+import ytSearch from 'yt-search';
 
 const router = express.Router();
 
-// ytsr doesn't easily support fetching a "home" page of recommendations without a search term.
+// yt-search doesn't easily support fetching a "home" page of recommendations without a search term.
 // Let's implement a fallback using predefined searches for top mixes
 router.get('/', async (req, res) => {
     try {
@@ -14,20 +14,31 @@ router.get('/', async (req, res) => {
         ];
 
         const results = await Promise.all(categories.map(async (cat) => {
-            const searchResults = await ytsr(cat.query, { limit: 10 });
+            const searchResults = await ytSearch(cat.query);
 
-            const filtered = searchResults.items.filter(i => i.type === cat.type).map(i => ({
-                id: i.id || i.playlistID,
-                title: i.title,
-                thumbnail: i.bestThumbnail?.url || i.thumbnails?.[0]?.url || i.firstVideo?.bestThumbnail?.url,
-                author: i.author?.name || 'Various Artists',
-                type: cat.type
-            }));
+            let items = [];
+            if (cat.type === 'video') {
+                items = searchResults.videos.slice(0, 5).map(i => ({
+                    id: i.videoId,
+                    title: i.title,
+                    thumbnail: i.thumbnail || i.image,
+                    author: i.author?.name || 'Various Artists',
+                    type: 'video'
+                }));
+            } else if (cat.type === 'playlist') {
+                items = searchResults.playlists.slice(0, 5).map(i => ({
+                    id: i.listId,
+                    title: i.title,
+                    thumbnail: i.thumbnail || i.image,
+                    author: i.author?.name || 'Various Artists',
+                    type: 'playlist'
+                }));
+            }
 
             return {
                 id: cat.id,
                 title: cat.title,
-                items: filtered.slice(0, 5) // Return top 5 for each category
+                items: items
             }
         }));
 
@@ -54,22 +65,30 @@ router.get('/section/:id', async (req, res) => {
             return res.status(404).json({ error: 'Section not found' });
         }
 
-        const searchResults = await ytsr(category.query, { limit: 30 }); // Fetch more for 'Show All'
+        const searchResults = await ytSearch(category.query);
         
-        // Filter out channels/shelves, keep videos and playlists
-        const validItems = searchResults.items.filter(i => i.type === 'video' || i.type === 'playlist');
-        
-        const formatted = validItems.map(i => ({
-            id: i.id || i.playlistID,
-            title: i.title,
-            thumbnail: i.bestThumbnail?.url || i.thumbnails?.[0]?.url || i.firstVideo?.bestThumbnail?.url,
-            author: i.author?.name || 'Various Artists',
-            type: i.type
-        }));
+        let formatted = [];
+        if (category.type === 'video') {
+             formatted = searchResults.videos.slice(0, 20).map(i => ({
+                 id: i.videoId,
+                 title: i.title,
+                 thumbnail: i.thumbnail || i.image,
+                 author: i.author?.name || 'Various Artists',
+                 type: 'video'
+             }));
+        } else {
+             formatted = searchResults.playlists.slice(0, 20).map(i => ({
+                 id: i.listId,
+                 title: i.title,
+                 thumbnail: i.thumbnail || i.image,
+                 author: i.author?.name || 'Various Artists',
+                 type: 'playlist'
+             }));
+        }
 
         res.json({
             title: category.title,
-            items: formatted.slice(0, 20) // Return top 20
+            items: formatted // Return top 20
         });
 
     } catch (error) {
